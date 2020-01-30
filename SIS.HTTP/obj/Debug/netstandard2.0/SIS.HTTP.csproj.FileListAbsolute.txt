@@ -1,0 +1,8 @@
+C:\Users\HP\source\repos\SIS\SIS.HTTP\bin\Debug\netstandard2.0\SIS.HTTP.deps.json
+C:\Users\HP\source\repos\SIS\SIS.HTTP\bin\Debug\netstandard2.0\SIS.HTTP.dll
+C:\Users\HP\source\repos\SIS\SIS.HTTP\bin\Debug\netstandard2.0\SIS.HTTP.pdb
+C:\Users\HP\source\repos\SIS\SIS.HTTP\obj\Debug\netstandard2.0\SIS.HTTP.csprojAssemblyReference.cache
+C:\Users\HP\source\repos\SIS\SIS.HTTP\obj\Debug\netstandard2.0\SIS.HTTP.AssemblyInfoInputs.cache
+C:\Users\HP\source\repos\SIS\SIS.HTTP\obj\Debug\netstandard2.0\SIS.HTTP.AssemblyInfo.cs
+C:\Users\HP\source\repos\SIS\SIS.HTTP\obj\Debug\netstandard2.0\SIS.HTTP.dll
+C:\Users\HP\source\repos\SIS\SIS.HTTP\obj\Debug\netstandard2.0\SIS.HTTP.pdb

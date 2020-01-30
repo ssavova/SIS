@@ -1,0 +1,17 @@
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\DemoApp.exe
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\DemoApp.deps.json
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\DemoApp.runtimeconfig.json
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\DemoApp.runtimeconfig.dev.json
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\DemoApp.dll
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\DemoApp.pdb
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\SIS.HTTP.dll
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\SIS.MvcFramework.dll
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\SIS.MvcFramework.pdb
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\SIS.HTTP.pdb
+C:\Users\HP\source\repos\SIS\DemoApp\obj\Debug\netcoreapp3.1\DemoApp.csprojAssemblyReference.cache
+C:\Users\HP\source\repos\SIS\DemoApp\obj\Debug\netcoreapp3.1\DemoApp.AssemblyInfoInputs.cache
+C:\Users\HP\source\repos\SIS\DemoApp\obj\Debug\netcoreapp3.1\DemoApp.AssemblyInfo.cs
+C:\Users\HP\source\repos\SIS\DemoApp\obj\Debug\netcoreapp3.1\DemoApp.csproj.CopyComplete
+C:\Users\HP\source\repos\SIS\DemoApp\obj\Debug\netcoreapp3.1\DemoApp.dll
+C:\Users\HP\source\repos\SIS\DemoApp\obj\Debug\netcoreapp3.1\DemoApp.pdb
+C:\Users\HP\source\repos\SIS\DemoApp\bin\Debug\netcoreapp3.1\wwwroot\favicon.ico
