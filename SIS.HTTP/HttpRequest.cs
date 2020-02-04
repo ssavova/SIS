@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Web;
 
 namespace SIS.HTTP
 {
@@ -9,6 +10,10 @@ namespace SIS.HTTP
     {
         public HttpRequest(string httpRquestAsString)
         {
+            this.FormData = new Dictionary<string, string>();
+
+            this.SessionData = new Dictionary<string, string>();
+
             this.Cookies = new List<Cookie>();
 
             this.Headers = new List<Header>();
@@ -92,8 +97,14 @@ namespace SIS.HTTP
                 }
             }
 
-            this.Body = bodyBuilder.ToString();
+            this.Body = bodyBuilder.ToString().TrimEnd('\r','\n');
+            var bodyParts = this.Body.Split(new char[] { '&' },StringSplitOptions.RemoveEmptyEntries);
 
+            foreach(var part in bodyParts)
+            {
+                var keyValue = part.Split(new char[] { '=' },2);
+                this.FormData.Add(HttpUtility.UrlDecode(keyValue[0]), HttpUtility.UrlDecode(keyValue[1]));
+            }
         }
         public HttpMethodType Method { get; set; }
         public string Path { get; set; }
@@ -106,6 +117,7 @@ namespace SIS.HTTP
 
         public string Body { get; set; }
 
+        public IDictionary<string,string> FormData { get; set; }
         public IDictionary<string,string> SessionData { get; set; }
     }
 }

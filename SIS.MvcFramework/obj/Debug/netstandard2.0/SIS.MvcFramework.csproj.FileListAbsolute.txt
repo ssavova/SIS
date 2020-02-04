@@ -9,3 +9,14 @@ C:\Users\HP\source\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFr
 C:\Users\HP\source\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.csproj.CopyComplete
 C:\Users\HP\source\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.dll
 C:\Users\HP\source\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.pdb
+C:\repos\SIS\SIS.MvcFramework\bin\Debug\netstandard2.0\SIS.MvcFramework.deps.json
+C:\repos\SIS\SIS.MvcFramework\bin\Debug\netstandard2.0\SIS.MvcFramework.dll
+C:\repos\SIS\SIS.MvcFramework\bin\Debug\netstandard2.0\SIS.MvcFramework.pdb
+C:\repos\SIS\SIS.MvcFramework\bin\Debug\netstandard2.0\SIS.HTTP.dll
+C:\repos\SIS\SIS.MvcFramework\bin\Debug\netstandard2.0\SIS.HTTP.pdb
+C:\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.csprojAssemblyReference.cache
+C:\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.AssemblyInfoInputs.cache
+C:\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.AssemblyInfo.cs
+C:\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.csproj.CopyComplete
+C:\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.dll
+C:\repos\SIS\SIS.MvcFramework\obj\Debug\netstandard2.0\SIS.MvcFramework.pdb
