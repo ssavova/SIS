@@ -10,15 +10,29 @@ namespace SulsApp.Controllers
 {
     public class UsersController : Controller
     {
-        public HttpResponse Login(HttpRequest request)
+        
+        public HttpResponse Login()
         {
             return this.View();
         }
 
-        public HttpResponse Register(HttpRequest request)
+        [HttpPost("/Users/Login")]
+        public HttpResponse DoLogin()
+        {
+            return this.View();
+        }
+
+        
+        public HttpResponse Register()
         {
             return this.View();
            
+        }
+
+        [HttpPost("/Users/Register")]
+        public HttpResponse DoRegister()
+        {
+            return this.View();
         }
     }
 }

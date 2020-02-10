@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-
 namespace SIS.MvcFramework
 {
     public class ViewEngine : IViewEngine
@@ -15,8 +14,9 @@ namespace SIS.MvcFramework
         public string GetHtml(string templateHTML, object model)
         {
             var methodCode = PrepareCSharpCode(templateHTML);
-            var typeName = model.GetType().FullName;
-            if (model.GetType().IsGenericType)
+            var typeName = model?.GetType().FullName ?? "object";
+
+            if (model?.GetType().IsGenericType == true)
             {
                 typeName = model.GetType().Name.Replace("`1", string.Empty) + "<" + model.GetType().GenericTypeArguments.First().Name + ">";
             }
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using SIS.MvcFramework;
+
 namespace AppViewNamespace
 {{
     public class AppViewCode : IView
@@ -32,6 +33,7 @@ namespace AppViewNamespace
         public string GetHtml(object model)
         {{
             var Model = model as {typeName};
+            object User = null;
             var html = new StringBuilder();
             {methodCode}
             return html.ToString();
@@ -46,11 +48,15 @@ namespace AppViewNamespace
 
         private IView GetInstanceFromCode(string code, object model)
         {
-            var compilation = CSharpCompilation.Create("AppViewAssembly").WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+            var compilation = CSharpCompilation.Create("AppViewAssembly")
+                .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(IView).Assembly.Location))
-                .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
-                .AddReferences(MetadataReference.CreateFromFile(model.GetType().Assembly.Location));
-
+                .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
+                
+            if(model != null)
+            {
+                compilation = compilation.AddReferences(MetadataReference.CreateFromFile(model.GetType().Assembly.Location));
+            };
             var libraries = Assembly.Load(new AssemblyName("netstandard")).GetReferencedAssemblies();
 
             foreach (var library in libraries)
@@ -94,7 +100,7 @@ namespace AppViewNamespace
                 {
                     cSharpCode.AppendLine(line);
                 }
-                else if (supportedOperators.Any(l => l.TrimStart().StartsWith("@" + l)))
+                else if (supportedOperators.Any(x => line.TrimStart().StartsWith("@" + x)))
                 {
                     var indexOfAt = line.IndexOf("@");
                     line = line.Remove(indexOfAt, 1);

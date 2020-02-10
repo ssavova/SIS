@@ -1,22 +1,16 @@
-﻿<html>
-<head>
-</head>
-<body>
-    <h1 class="text-center suls-text-color">Login</h1>
-    <form class="mx-auto half-width col-5" action="/Users/Login" method="post">
-        <div class="top-border-line primary-separator"></div>
-        <div class="form-group">
-            <label class="suls-text-color" for="username">Username</label>
-            <input name="username" class="form-control" id="username" type="text" placeholder="Username...">
-        </div>
-        <div class="form-group">
-            <label class="suls-text-color" for="password">Password</label>
-            <input name="password" class="form-control" id="password" type="password" placeholder="Password...">
-        </div>
-        <div class="top-border-line primary-separator"></div>
-        <div class="button-holder d-flex justify-content-center">
-            <button class="btn suls-bg-color" type="submit">Login</button>
-        </div>
-    </form>
-</body>
-</html>
+﻿<h1 class="text-center suls-text-color">Login</h1>
+<form class="mx-auto half-width col-5" method="post" action="/Users/Login">
+    <div class="top-border-line primary-separator"></div>
+    <div class="form-group">
+        <label for="username" class="suls-text-color">Username</label>
+        <input type="text" class="form-control" id="username" placeholder="Username..." name="username">
+    </div>
+    <div class="form-group">
+        <label for="password" class="suls-text-color">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password..." name="password">
+    </div>
+    <div class="top-border-line primary-separator"></div>
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn suls-bg-color">Login</button>
+    </div>
+</form>
