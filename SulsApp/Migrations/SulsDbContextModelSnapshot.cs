@@ -81,6 +81,9 @@ namespace SulsApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")
@@ -94,11 +97,11 @@ namespace SulsApp.Migrations
             modelBuilder.Entity("SulsApp.Models.Submission", b =>
                 {
                     b.HasOne("SulsApp.Models.Problem", "Problem")
-                        .WithMany()
+                        .WithMany("Submissions")
                         .HasForeignKey("ProblemId");
 
                     b.HasOne("SulsApp.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Submissions")
                         .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618

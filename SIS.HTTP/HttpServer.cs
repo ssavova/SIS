@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SIS.HTTP.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,13 +14,15 @@ namespace SIS.HTTP
         private readonly TcpListener tcpListener;
         private readonly IList<Route> routeTable;
         private readonly IDictionary<string, IDictionary<string, string>> sessions;
+        private readonly ILogger logger;
             
         //TODO: actions to pass on the constructor
-        public HttpServer(int port, IList<Route> routingTable)
+        public HttpServer(int port, IList<Route> routingTable, ILogger logger)
         {
             this.tcpListener = new TcpListener(IPAddress.Loopback, port);
             this.routeTable = routingTable;
             this.sessions = new Dictionary<string, IDictionary<string, string>>();
+            this.logger = logger;
         }
 
 
@@ -74,7 +77,7 @@ namespace SIS.HTTP
                         request.SessionData = dictionary;
                     }
 
-                    Console.WriteLine($"{request.Method} {request.Path}");
+                    this.logger.Log($"{request.Method} {request.Path}");
 
                     var route = this.routeTable.FirstOrDefault(x => x.HttpMethod == request.Method && string.Compare(x.Path,request.Path,true) == 0);
 

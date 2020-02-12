@@ -85,3 +85,4 @@ C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSha
 C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\wwwroot\css\reset.css
 C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\wwwroot\favicon.ico
 C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\wwwroot\img\dog.jpg
+C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\Views\Shared\Error.html

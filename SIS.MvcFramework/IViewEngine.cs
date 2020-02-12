@@ -6,6 +6,6 @@ namespace SIS.MvcFramework
 {
     public interface IViewEngine
     {
-        string GetHtml(string templateHTML, object model);
+        string GetHtml(string templateHTML, object model, string user);
     }
 }

@@ -1359,7 +1359,8 @@
       "SIS.MvcFramework/1.0.0": {
         "dependencies": {
           "Microsoft.CodeAnalysis.CSharp": "3.4.0",
-          "SIS.HTTP": "1.0.0"
+          "SIS.HTTP": "1.0.0",
+          "System.ComponentModel.Annotations": "4.7.0"
         },
         "runtime": {
           "SIS.MvcFramework.dll": {}
