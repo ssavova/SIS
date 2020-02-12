@@ -4,6 +4,7 @@ using SIS.HTTP.Response;
 using SIS.MvcFramework;
 using SulsApp.Models;
 using SulsApp.Services;
+using SulsApp.ViewModels.Users;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,12 +28,9 @@ namespace SulsApp.Controllers
             return this.View();
         }
 
-        [HttpPost("/Users/Login")]
-        public HttpResponse DoLogin()
+        [HttpPost]
+        public HttpResponse Login(string username, string password)
         {
-            string username = this.Request.FormData["username"];
-            string password = this.Request.FormData["password"];
-
             var userId = this.userService.GetUserId(username, password);
             if (userId == null)
             {
@@ -51,43 +49,54 @@ namespace SulsApp.Controllers
 
         }
 
-        [HttpPost("/Users/Register")]
-        public HttpResponse DoRegister()
+        [HttpPost]
+        public HttpResponse Register(RegisterInputModel input)
         {
-            var username = this.Request.FormData["username"];
-            var email = this.Request.FormData["email"];
-            var password = this.Request.FormData["password"];
-            var confirmPassword = this.Request.FormData["confirmPassword"];
 
-            if (password != confirmPassword)
+            if (input.Password != input.ConfirmPassword)
             {
                 return this.Error("Passwords doesn`t match!");
             }
 
-            if (username?.Length < 5 || username?.Length > 20)
+            if (input.Username?.Length < 5 || input.Username?.Length > 20)
             {
                 return this.Error("Username should be in range 5 - 20 characters.");
             }
 
-            if (!IsValid(email))
+            if (!IsValid(input.Email))
             {
                 return this.Error("Invalid email address!");
             }
 
 
-            if (password?.Length < 6 || password?.Length > 20)
+            if (input.Password?.Length < 6 || input.Password?.Length > 20)
             {
                 return this.Error("Password should be in range 6 - 20 characters.");
             }
 
-            this.userService.CreateUser(username, email, password);
-            this.logger.Log("New User: " + username);
+            if(this.userService.IsUsernameUsed(input.Username))
+            {
+                return this.Error("This username is already used!");
+            }
+
+            if (this.userService.IsEmailUsed(input.Email))
+            {
+                return this.Error("This email is already used!");
+            }
+
+            this.userService.CreateUser(input.Username, input.Email, input.Password);
+            this.logger.Log("New User: " + input.Username);
 
             return this.Redirect("/Users/Login");
         }
 
         public HttpResponse Logout()
         {
+            if (!this.IsUserLoggedIn())
+            {
+                return this.Redirect("/Users/Login");
+            }
+
             this.SignOut();
             return this.Redirect("/");
         }

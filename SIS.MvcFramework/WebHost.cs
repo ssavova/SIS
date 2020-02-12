@@ -76,8 +76,46 @@ namespace SIS.MvcFramework
         {
                 var controller = serviceCollection.CreateInstance(controllerType) as Controller;
                 controller.Request = request;
-                var response = actionMethod.Invoke(controller, new object[] { }) as HttpResponse;
+
+            var actionParametersValues = new List<object>();
+            var actionParameters = actionMethod.GetParameters();
+            foreach(var parameter in actionParameters)
+            {
+                
+                object value = Convert.ChangeType(GetValueFromRequest(request,parameter.Name),parameter.ParameterType);
+
+
+                if(value == null)
+                {
+                    var parameterValue = Activator.CreateInstance(parameter.ParameterType);
+                    foreach(var property in parameter.ParameterType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                    {
+                        var propertyValue = GetValueFromRequest(request, property.Name);
+                        property.SetValue(parameterValue, Convert.ChangeType(propertyValue,property.PropertyType) );
+                    }
+                    actionParametersValues.Add(parameterValue);
+                }
+                
+            }
+                var response = actionMethod.Invoke(controller, actionParametersValues.ToArray()) as HttpResponse;
                 return response;
+        }
+        private static object GetValueFromRequest(HttpRequest request, string parameterName)
+        {
+            parameterName = parameterName.ToLower();
+
+            object value = null;
+
+            if (request.FormData.Any(x => x.Key.ToLower() == parameterName))
+            {
+                value = request.FormData.FirstOrDefault(x => x.Key.ToLower() == parameterName).Value;
+            }
+            else if (request.QueryData.Any(x => x.Key.ToLower() == parameterName))
+            {
+                value = request.QueryData.FirstOrDefault(x => x.Key.ToLower() == parameterName).Value;
+            }
+
+            return value;
         }
         private static void AutoRegisterStaticFilesRoutes(IList<Route> routeTable)
         {

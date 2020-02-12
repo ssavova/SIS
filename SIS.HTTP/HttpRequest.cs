@@ -10,6 +10,7 @@ namespace SIS.HTTP
     {
         public HttpRequest(string httpRquestAsString)
         {
+            this.QueryData = new Dictionary<string,string>();
             this.FormData = new Dictionary<string, string>();
 
             this.SessionData = new Dictionary<string, string>();
@@ -98,12 +99,26 @@ namespace SIS.HTTP
             }
 
             this.Body = bodyBuilder.ToString().TrimEnd('\r','\n');
-            var bodyParts = this.Body.Split(new char[] { '&' },StringSplitOptions.RemoveEmptyEntries);
+            ParseData(this.FormData, this.Body);
 
-            foreach(var part in bodyParts)
+            this.Query = string.Empty;
+            if (this.Path.Contains("?"))
             {
-                var keyValue = part.Split(new char[] { '=' },2);
-                this.FormData.Add(HttpUtility.UrlDecode(keyValue[0]), HttpUtility.UrlDecode(keyValue[1]));
+                var parts = this.Path.Split(new char[] { '?' }, 2);
+                this.Path = parts[0];
+                this.Query = parts[1];
+            }
+           // ParseData(this.QueryData, this.Query);
+        }
+
+        private void ParseData(IDictionary<string,string> output, string input)
+        {
+            var dataParts = input.Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var part in dataParts)
+            {
+                var keyValue = part.Split(new char[] { '=' }, 2);
+                output.Add(HttpUtility.UrlDecode(keyValue[0]), HttpUtility.UrlDecode(keyValue[1]));
             }
         }
         public HttpMethodType Method { get; set; }
@@ -118,6 +133,9 @@ namespace SIS.HTTP
         public string Body { get; set; }
 
         public IDictionary<string,string> FormData { get; set; }
+
+        public string Query { get; set; }
+        public IDictionary<string,string> QueryData { get; set; }
         public IDictionary<string,string> SessionData { get; set; }
     }
 }

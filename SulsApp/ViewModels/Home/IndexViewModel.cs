@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SulsApp.ViewModels
+namespace SulsApp.ViewModels.Home
 {
     public class IndexViewModel
     {
