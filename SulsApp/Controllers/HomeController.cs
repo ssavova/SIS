@@ -44,7 +44,7 @@ namespace SulsApp.Controllers
             this.logger.Log("Hello from Index");
             var viewModel = new IndexViewModel
             {
-                Message = "Welcome to SULS Platform!",
+                Message = "Welcome to the Stefi`s Simple App",
                 Year = DateTime.UtcNow.Year,
             };
             return this.View(viewModel);

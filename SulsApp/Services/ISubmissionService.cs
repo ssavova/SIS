@@ -6,7 +6,7 @@ namespace SulsApp.Services
 {
     public interface ISubmissionService
     {
-        void CreateSubmission(string userId,string problemId, string code);
+        void Create(string userId,string problemId, string code);
 
         void Delete(string submissionId);
     }

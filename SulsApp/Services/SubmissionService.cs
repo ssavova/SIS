@@ -9,14 +9,16 @@ namespace SulsApp.Services
     public class SubmissionService : ISubmissionService
     {
         private readonly SulsDbContext db;
-        public SubmissionService(SulsDbContext db)
+        private readonly Random random;
+        public SubmissionService(SulsDbContext db, Random random)
         {
             this.db = db;
+            this.random = random;
         }
 
-        public void CreateSubmission(string userId, string problemId, string code)
+        public void Create(string userId, string problemId, string code)
         {
-            var problemPoints = this.db.Problems.FirstOrDefault(p => p.Id == problemId).Points;
+            var problem = this.db.Problems.FirstOrDefault(p => p.Id == problemId);
 
             Submission submission = new Submission()
             {
@@ -24,11 +26,11 @@ namespace SulsApp.Services
                 UserId = userId,
                 ProblemId = problemId,
                 Code = code,
-                AchievedResult = new Random().Next(0,problemPoints +1),
+                AchievedResult = random.Next(0,problem.Points + 1),
             };
 
             this.db.Submissions.Add(submission);
-            db.SaveChanges();
+            this.db.SaveChanges();
         }
 
         public void Delete(string submissionId)

@@ -44,9 +44,10 @@ namespace SulsApp.Controllers
             {
                 return this.Error("Points range: [1-100]");
             }
+
             this.problemService.CreateProblem(name, points);
 
-            return this.Redirect("/Problems/Details");
+            return this.Redirect("/");
         }
 
         public HttpResponse Details(string id)

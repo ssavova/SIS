@@ -53,16 +53,16 @@ namespace SulsApp.Controllers
                 return this.Redirect("/Users/Login");
             }
 
-            if(code == null && code.Length < 30)
+            if(code == null || code.Length < 30)
             {
                 return this.Error("Code must be at least 30 characters");
             }
 
 
 
-            this.submissionService.CreateSubmission(this.User, problemId, code);
+            this.submissionService.Create(this.User, problemId, code);
 
-            return Redirect("/");
+            return this.Redirect("/");
         }
         
         
