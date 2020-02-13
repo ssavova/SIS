@@ -1,64 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Web;
-
-namespace SIS.HTTP
+﻿namespace SIS.HTTP
 {
+    using System;
+    using System.Web;
+    using System.Text;
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Represents an HTTP Request with properties for the <c>Request Line</c>, <c>Request Headers</c> and <c>Request Body</c>.
+    /// </summary>
     public class HttpRequest
     {
-        public HttpRequest(string httpRquestAsString)
+        /// <summary>
+        /// Initializes a new <see cref="HttpRequest"/> class.
+        /// </summary>
+        /// <param name="httpRequestAsString">HTTP Request string</param>
+        public HttpRequest(string httpRequestAsString)
         {
-            this.QueryData = new Dictionary<string,string>();
-            this.FormData = new Dictionary<string, string>();
-
-            this.SessionData = new Dictionary<string, string>();
-
-            this.Cookies = new List<Cookie>();
+            if (string.IsNullOrWhiteSpace(httpRequestAsString))
+            {
+                return;
+            }
 
             this.Headers = new List<Header>();
+            this.Cookies = new List<Cookie>();
 
-            var lines = httpRquestAsString
-                .Split(new string[] { HttpConstants.NewLine }, StringSplitOptions.None);
-
+            var lines = httpRequestAsString.Split(
+                new string[] { HttpConstants.NewLine },
+                StringSplitOptions.None);
             var httpInfoHeader = lines[0];
-
             var infoHeaderParts = httpInfoHeader.Split(' ');
-
-            if(infoHeaderParts.Length != 3)
+            if (infoHeaderParts.Length != 3)
             {
-                throw new HttpServerException("Invalid Http Header line.");
+                throw new HttpServerException("Invalid HTTP header line.");
             }
 
             var httpMethod = infoHeaderParts[0];
-            switch (httpMethod)
+            // Enum.TryParse(httpMethod, out HttpMethodType type);
+            this.Method = httpMethod switch
             {
-                case "POST": this.Method = HttpMethodType.Post;break;
-                case "GET": this.Method = HttpMethodType.Get; break;
-                case "PUT": this.Method = HttpMethodType.Put; break;
-                case "DELETE": this.Method = HttpMethodType.Delete; break;
+                "GET" => HttpMethodType.Get,
+                "POST" => HttpMethodType.Post,
+                "PUT" => HttpMethodType.Put,
+                "DELETE" => HttpMethodType.Delete,
+                _ => HttpMethodType.Unknown,
             };
 
             this.Path = infoHeaderParts[1];
 
-            var versionType = infoHeaderParts[2];
-
-            switch (versionType)
+            var httpVersion = infoHeaderParts[2];
+            this.Version = httpVersion switch
             {
-                case "HTTP/1.0": this.Version = HttpVersionType.Http10; break;
-                case "HTTP/1.1": this.Version = HttpVersionType.Http11; break;
-                case "HTTP/2.0": this.Version = HttpVersionType.Http20; break;
+                "HTTP/1.0" => HttpVersionType.Http10,
+                "HTTP/1.1" => HttpVersionType.Http11,
+                "HTTP/2.0" => HttpVersionType.Http20,
+                _ => HttpVersionType.Http11,
             };
 
             bool isInHeader = true;
-
             StringBuilder bodyBuilder = new StringBuilder();
-
-            for(int i= 1; i<lines.Length; i++)
+            for (int i = 1; i < lines.Length; i++)
             {
                 var line = lines[i];
-
                 if (string.IsNullOrWhiteSpace(line))
                 {
                     isInHeader = false;
@@ -67,27 +69,28 @@ namespace SIS.HTTP
 
                 if (isInHeader)
                 {
-                    var headerParts = line.Split(new string[] { ": " },2,StringSplitOptions.None);
-                    if(headerParts.Length != 2)
+                    var headerParts = line.Split(
+                        new string[] { ": " },
+                        2,
+                        StringSplitOptions.None);
+                    if (headerParts.Length != 2)
                     {
                         throw new HttpServerException($"Invalid header: {line}");
                     }
 
-                    Header currentHeader = new Header(headerParts[0],headerParts[1]);
-                    this.Headers.Add(currentHeader);
+                    var header = new Header(headerParts[0], headerParts[1]);
+                    this.Headers.Add(header);
 
-                    if(headerParts[0] == "Cookie")
+                    if (headerParts[0] == "Cookie")
                     {
                         var cookiesAsString = headerParts[1];
                         var cookies = cookiesAsString.Split(new string[] { "; " }, StringSplitOptions.RemoveEmptyEntries);
-
-                        foreach(var cookieAsString in cookies)
+                        foreach (var cookieAsString in cookies)
                         {
-                            var coookieParts = cookieAsString.Split(new char[] { '=' }, 2);
-
-                            if(coookieParts.Length == 2)
+                            var cookieParts = cookieAsString.Split(new char[] { '=' }, 2);
+                            if (cookieParts.Length == 2)
                             {
-                                this.Cookies.Add(new Cookie(coookieParts[0], coookieParts[1]));
+                                this.Cookies.Add(new Cookie(cookieParts[0], cookieParts[1]));
                             }
                         }
                     }
@@ -98,7 +101,9 @@ namespace SIS.HTTP
                 }
             }
 
-            this.Body = bodyBuilder.ToString().TrimEnd('\r','\n');
+            // creator=Niki&tweetName=Hello!
+            this.Body = bodyBuilder.ToString().TrimEnd('\r', '\n');
+            this.FormData = new Dictionary<string, string>();
             ParseData(this.FormData, this.Body);
 
             this.Query = string.Empty;
@@ -108,34 +113,59 @@ namespace SIS.HTTP
                 this.Path = parts[0];
                 this.Query = parts[1];
             }
-           // ParseData(this.QueryData, this.Query);
+
+            this.QueryData = new Dictionary<string, string>();
+            ParseData(this.QueryData, this.Query);
         }
 
-        private void ParseData(IDictionary<string,string> output, string input)
+        private void ParseData(IDictionary<string, string> output, string input)
         {
             var dataParts = input.Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var part in dataParts)
+            foreach (var dataPart in dataParts)
             {
-                var keyValue = part.Split(new char[] { '=' }, 2);
-                output.Add(HttpUtility.UrlDecode(keyValue[0]), HttpUtility.UrlDecode(keyValue[1]));
+                var parameterParts = dataPart.Split(new char[] { '=' }, 2);
+                output.Add(
+                    HttpUtility.UrlDecode(parameterParts[0]),
+                    HttpUtility.UrlDecode(parameterParts[1]));
             }
         }
+
+        /// <summary>
+        /// HTTP Request line Method.
+        /// </summary>
         public HttpMethodType Method { get; set; }
+
+        /// <summary>
+        /// HTTP Request line Path.
+        /// </summary>
         public string Path { get; set; }
 
+        /// <summary>
+        /// HTTP Request line Version.
+        /// </summary>
         public HttpVersionType Version { get; set; }
 
+        /// <summary>
+        /// Collection of HTTP Request Headers.
+        /// </summary>
         public IList<Header> Headers { get; set; }
 
+        /// <summary>
+        /// Collection of HTTP Request Cookies.
+        /// </summary>
         public IList<Cookie> Cookies { get; set; }
 
+        /// <summary>
+        /// HTTP Request Body.
+        /// </summary>
         public string Body { get; set; }
 
-        public IDictionary<string,string> FormData { get; set; }
+        public IDictionary<string, string> FormData { get; set; }
 
         public string Query { get; set; }
-        public IDictionary<string,string> QueryData { get; set; }
-        public IDictionary<string,string> SessionData { get; set; }
+
+        public IDictionary<string, string> QueryData { get; set; }
+
+        public IDictionary<string, string> SessionData { get; set; }
     }
 }

@@ -1,19 +1,20 @@
 ﻿using SIS.HTTP;
 using SIS.MvcFramework;
-using SulsApp.Models;
 using SulsApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SulsApp.ViewModels.Problems;
+using System.Linq;
+
 
 namespace SulsApp.Controllers
 {
     public class ProblemsController : Controller
     {
         private readonly IProblemsService problemService;
-        public ProblemsController(IProblemsService problemService)
+        private readonly SulsDbContext db;
+        public ProblemsController(IProblemsService problemService, SulsDbContext db)
         {
             this.problemService = problemService;
+            this.db = db;
         }
 
         [HttpGet]
@@ -45,7 +46,32 @@ namespace SulsApp.Controllers
             }
             this.problemService.CreateProblem(name, points);
 
-            return this.Redirect("/");
+            return this.Redirect("/Problems/Details");
+        }
+
+        public HttpResponse Details(string id)
+        {
+            if (!this.IsUserLoggedIn())
+            {
+                return this.Redirect("/Users/Login");
+            }
+
+            var viewModel = this.db.Problems.Where(x => x.Id == id).Select(
+                x => new DetailsViewModel
+                {
+                    Name = x.Name,
+                    Problems = x.Submissions.Select(s =>
+                    new ProblemDetailsSubmissionViewModel
+                    {
+                        CreatedOn = s.CreatedOn,
+                        AchievedResult = s.AchievedResult,
+                        SubmissionId = s.Id,
+                        MaxPoints = x.Points,
+                        Username = s.User.Username,
+                    })
+                }).FirstOrDefault();
+
+            return this.View(viewModel);
         }
     }
 }

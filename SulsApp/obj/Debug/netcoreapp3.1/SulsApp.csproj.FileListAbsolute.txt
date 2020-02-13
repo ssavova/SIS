@@ -88,3 +88,6 @@ C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\wwwroot\img\dog.jpg
 C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\Views\Shared\Error.html
 C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\Views\Problems\Create.html
 C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\Views\Problems\Details.html
+C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\ViewModels\Home\LoggedInViewModel.cs
+C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\Views\Home\IndexLoggedIn.html
+C:\repos\SIS\SulsApp\bin\Debug\netcoreapp3.1\Views\Submissions\Create.html
